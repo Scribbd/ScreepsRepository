@@ -6,19 +6,19 @@ var helperVisuals = require('helper.visuals');
 var controlRespawn = {
     run: function() {
         // Not needing action
-        if(Memory.respawnQueue == null) {
-            Memory.respawnQueue = {};
+        if(Memory.spawnQueue == null) {
+            Memory.spawnQueue = {};
         }
         
-        if(Object.keys(Memory.respawnQueue).length > 0) {
-            for(var death in Memory.respawnQueue) {
-                var respawnStatus = Game.spawns['Home'].canCreateCreep([WORK, CARRY, MOVE], Memory.respawnQueue[death]);
+        if(Object.keys(Memory.spawnQueue).length > 0) {
+            for(var spawnee in Memory.spawnQueue) {
+                var respawnStatus = Game.spawns['Home'].canCreateCreep([WORK, CARRY, MOVE], Memory.spawnQueue[spawnee]);
                 if(respawnStatus == OK) {
-                    helperVisuals.showNextToRoomObject(Game.spawns['Home'], Memory.respawnQueue[death]);
-                    delete Memory.respawnQueue[death];
+                    helperVisuals.showNextToRoomObject(Game.spawns['Home'], Memory.spawnQueue[spawnee]);
+                    delete Memory.spawnQueue[spawnee];
                 }
                 else if (respawnStatus == ERR_NOT_ENOUGH_ENERGY) {
-                    Game.spawns['Home'].createCreep([WORK, CARRY, MOVE], death, {role: Memory.respawnQueue[death]});
+                    Game.spawns['Home'].createCreep([WORK, CARRY, MOVE], spawnee, {role: Memory.spawnQueue[spawnee]});
                     helperVisuals.showNextToRoomObject(Game.spawns['Home'], 'O_o No Power!');
                 }
                 else if (respawnStatus == ERR_BUSY) {
